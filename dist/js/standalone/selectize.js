@@ -2215,6 +2215,12 @@
 	
 				for (j = 0, k = optgroups && optgroups.length; j < k; j++) {
 					optgroup = optgroups[j];
+					if (!self.optgroups.hasOwnProperty(optgroup) && typeof self.settings.optgroupRegister === 'function') {
+						var regGroup;
+						if (regGroup = self.settings.optgroupRegister.apply(self, [optgroup])) {
+							self.registerOptionGroup(regGroup);
+						}
+					}
 					if (!self.optgroups.hasOwnProperty(optgroup)) {
 						optgroup = '';
 					}
@@ -3358,6 +3364,9 @@
 		optgroupLabelField: 'label',
 		optgroupValueField: 'value',
 		lockOptgroupOrder: false,
+		/*
+		optgroupRegister: null, // function(optgroup) { ... }
+		*/
 	
 		sortField: '$order',
 		searchField: ['text'],
